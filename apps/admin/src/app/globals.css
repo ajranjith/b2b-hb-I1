@@ -1,0 +1,93 @@
+@import "tailwindcss";
+@import "../assets/styles/_nprogress.css";
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: "DM Sans", sans-serif;
+  @apply bg-gray-100;
+}
+
+@theme {
+  --color-textgray: #6a6a6a;
+  --color-bordergray: #d9d9d9;
+  --color-primary: #0c4394;
+  --breakpoint-3xl: 120rem;
+}
+
+#nprogress {
+  pointer-events: none;
+}
+#nprogress .bar {
+  background: #0c4394;
+  position: fixed;
+  z-index: 1031;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+}
+
+.sidebar-menu .ant-menu-item-selected {
+  background-color: #edf5ff !important;
+  border-right: 3px solid var(--color-primary) !important;
+  border-radius: 0 !important;
+  width: 100% !important;
+}
+.ant-menu-item {
+  margin-bottom: 4px !important;
+}
+.sidebar-menu .ant-menu-item-selected .ant-menu-title-content,
+.sidebar-menu .ant-menu-item-selected .anticon {
+  color: #2063b2 !important;
+}
+.ant-drawer-body {
+  padding: 16px 20px !important;
+}
+.ant-form-item {
+  margin-bottom: 12px !important;
+}
+.ant-form-item-label {
+  padding-bottom: 10px !important;
+}
+.ant-drawer-header-title {
+  flex-direction: row-reverse !important;
+}
+.ant-drawer-close {
+  border: 1px solid #e9e9e9 !important;
+  background-color: white !important;
+}
+
+.ck-editor__editable {
+  min-height: 250px !important;
+}
+
+/* Rich text content rendering (news, offers, pricelist) */
+.ck h1 {
+  @apply text-4xl font-semibold my-3;
+}
+.ck h2 {
+  @apply text-3xl font-semibold my-3;
+}
+.ck h3 {
+  @apply text-2xl font-semibold my-2;
+}
+.ck h4 {
+  @apply text-xl font-semibold my-2;
+}
+.ck p {
+  @apply my-4;
+}
+.ck ul {
+  @apply list-disc pl-6 my-3;
+}
+.ck ol {
+  @apply list-decimal pl-6 my-3;
+}
+.ck a {
+  @apply text-primary underline;
+}
+.ck blockquote {
+  @apply border-l-4 border-gray-300 pl-4 text-gray-500;
+}

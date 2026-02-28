@@ -1,0 +1,28 @@
+{
+  "name": "@hotbray/shared",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "index.ts",
+  "types": "index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./lib/*": "./lib/*.ts",
+    "./lib/QueryClient": "./lib/QueryClient.tsx",
+    "./lib/AxiosClient": "./lib/AxiosClient.ts",
+    "./utils/*": "./utils/*.ts",
+    "./contracts/*": "./contracts/*.ts",
+    "./components/*": "./components/*.tsx"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "antd": "^6.0.0",
+    "@tanstack/react-query": "^5.0.0",
+    "axios": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "typescript": "~5.9.3"
+  }
+}

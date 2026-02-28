@@ -1,0 +1,18 @@
+{
+  "name": "hotbray-admin-frontend",
+  "private": true,
+  "workspaces": [
+    "apps/admin",
+    "packages/shared"
+  ],
+  "scripts": {
+    "dev": "bun run --filter hotbray-admin dev",
+    "build": "bun run --filter hotbray-admin build",
+    "start": "bun run --filter hotbray-admin start",
+    "lint": "bun run --filter hotbray-admin lint"
+  },
+  "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.91.3",
+    "typescript": "~5.9.3"
+  }
+}
