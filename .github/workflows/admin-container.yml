@@ -1,0 +1,63 @@
+name: Build and Push Admin Image
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/admin/**"
+      - "packages/shared/**"
+      - "Dockerfile"
+      - "package.json"
+      - "bun.lock"
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  IMAGE_NAME: hotbray-admin
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Login to ACR (OIDC token)
+        run: |
+          TOKEN=$(az acr login \
+            --name ${{ secrets.AZURE_ACR_NAME }} \
+            --expose-token \
+            --output tsv \
+            --query accessToken)
+
+          echo $TOKEN | docker login \
+            ${{ secrets.AZURE_ACR_LOGIN_SERVER }} \
+            --username 00000000-0000-0000-0000-000000000000 \
+            --password-stdin
+
+      - name: Build and Push Image
+        run: |
+          IMAGE_TAG=${{ github.sha }}
+          IMAGE=${{ secrets.AZURE_ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}
+          docker build \
+            --build-arg NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }} \
+            --build-arg NEXT_PUBLIC_WEB_DOMAIN=${{ secrets.NEXT_PUBLIC_WEB_DOMAIN }} \
+            --build-arg NEXT_PUBLIC_RECAPTCHA_SITE_KEY=${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }} \
+            --build-arg NEXT_PUBLIC_RECAPTCHA_SITE_KEY_V2=${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY_V2 }} \
+            -t ${IMAGE}:${IMAGE_TAG} \
+            -t ${IMAGE}:latest \
+            .
+          docker push ${IMAGE}:${IMAGE_TAG}
+          docker push ${IMAGE}:latest
