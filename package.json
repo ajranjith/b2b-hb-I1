@@ -6,10 +6,10 @@
     "packages/shared"
   ],
   "scripts": {
-    "dev": "bun run --filter hotbray-admin dev",
-    "build": "bun run --filter hotbray-admin build",
-    "start": "bun run --filter hotbray-admin start",
-    "lint": "bun run --filter hotbray-admin lint"
+    "dev": "npm run dev -w hotbray-admin",
+    "build": "npm run build -w hotbray-admin",
+    "start": "npm run start -w hotbray-admin",
+    "lint": "npm run lint -w hotbray-admin"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.91.3",

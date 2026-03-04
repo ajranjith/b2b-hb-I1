@@ -27,7 +27,7 @@ cp apps/admin/.env.example apps/admin/.env.local
 
 | Command | Description |
 |--------|-------------|
-| `bun run dev` | Run admin app (http://localhost:5173) |
+| `bun run dev` | Run admin app (https://hb1-b2b-dev-admin-a0ejezg4becaddh9.ukwest-01.azurewebsites.net) |
 | `bun run build` | Build admin app |
 | `bun run start` | Start admin app (production) |
 | `bun run lint` | Lint admin app |

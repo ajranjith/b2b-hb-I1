@@ -4,7 +4,7 @@ export const ENV = {
   API_BASE_URL:
     process.env.NEXT_PUBLIC_API_BASE_URL ||
     process.env.API_BASE_URL ||
-    "http://localhost:3000/api/v1",
+    "",
   WEB_DOMAIN: process.env.NEXT_PUBLIC_WEB_DOMAIN || "",
 };
 

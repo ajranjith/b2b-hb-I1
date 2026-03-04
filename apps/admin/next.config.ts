@@ -3,6 +3,7 @@ import path from "path";
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  outputFileTracingRoot: path.resolve(__dirname, "../../"),
   transpilePackages: ["@hotbray/shared"],
   reactStrictMode: true,
   experimental:{

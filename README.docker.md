@@ -18,12 +18,12 @@ docker run -d --name hotbray-admin -p 5173:3000 --restart unless-stopped hotbray
 
 Access the application:
 
-- Admin: http://localhost:5173
+- Admin: https://hb1-b2b-dev-admin-a0ejezg4becaddh9.ukwest-01.azurewebsites.net
 
 ## Health check
 
 ```bash
-curl -I http://localhost:5173
+curl -I https://hb1-b2b-dev-admin-a0ejezg4becaddh9.ukwest-01.azurewebsites.net
 ```
 
 ## File structure
