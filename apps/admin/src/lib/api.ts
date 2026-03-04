@@ -1,9 +1,11 @@
 import { cookies } from "next/headers";
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL ||
-  process.env.API_BASE_URL ||
-  "";
+const rawApiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+if (!rawApiBaseUrl) {
+  throw new Error("NEXT_PUBLIC_API_BASE_URL is required");
+}
+
+const API_BASE = rawApiBaseUrl.replace(/\/+$/, "");
 
 export async function serverFetch<T>(
   path: string,

@@ -38,7 +38,7 @@ jobs:
         run: |
           IMAGE=${{ secrets.AZURE_ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}
           TAG=${{ github.sha }}
-          docker build             --build-arg NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}             --build-arg NEXT_PUBLIC_WEB_DOMAIN=${{ secrets.NEXT_PUBLIC_WEB_DOMAIN }}             --build-arg NEXT_PUBLIC_RECAPTCHA_SITE_KEY=${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}             --build-arg NEXT_PUBLIC_RECAPTCHA_SITE_KEY_V2=${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY_V2 }}             -t ${IMAGE}:${TAG}             -t ${IMAGE}:latest             .
+          docker build             --build-arg NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}             --build-arg NEXT_PUBLIC_WEB_DOMAIN=${{ secrets.NEXT_PUBLIC_WEB_DOMAIN }}             --build-arg NEXT_PUBLIC_RECAPTCHA_SITE_KEY=${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}                         -t ${IMAGE}:${TAG}             -t ${IMAGE}:latest             .
           docker push ${IMAGE}:${TAG}
           docker push ${IMAGE}:latest
 

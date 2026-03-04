@@ -1,10 +1,14 @@
 import type { QueryClientConfig } from "@tanstack/react-query";
 
+const rawApiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+if (!rawApiBaseUrl) {
+  throw new Error("NEXT_PUBLIC_API_BASE_URL is required");
+}
+
+const normalizedApiBaseUrl = rawApiBaseUrl.replace(/\/+$/, "");
+
 export const ENV = {
-  API_BASE_URL:
-    process.env.NEXT_PUBLIC_API_BASE_URL ||
-    process.env.API_BASE_URL ||
-    "",
+  API_BASE_URL: normalizedApiBaseUrl,
   WEB_DOMAIN: process.env.NEXT_PUBLIC_WEB_DOMAIN || "",
 };
 
