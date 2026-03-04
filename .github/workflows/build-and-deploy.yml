@@ -38,15 +38,27 @@ jobs:
         run: |
           IMAGE=${{ secrets.AZURE_ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}
           TAG=${{ github.sha }}
-          docker build             --build-arg NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}             --build-arg NEXT_PUBLIC_WEB_DOMAIN=${{ secrets.NEXT_PUBLIC_WEB_DOMAIN }}             --build-arg NEXT_PUBLIC_RECAPTCHA_SITE_KEY=${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}                         -t ${IMAGE}:${TAG}             -t ${IMAGE}:latest             .
+
+          docker build \
+            --build-arg NEXT_PUBLIC_API_BASE_URL='${{ secrets.NEXT_PUBLIC_API_BASE_URL }}' \
+            --build-arg NEXT_PUBLIC_WEB_DOMAIN='${{ secrets.NEXT_PUBLIC_WEB_DOMAIN }}' \
+            --build-arg NEXT_PUBLIC_RECAPTCHA_SITE_KEY='${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}' \
+            -t ${IMAGE}:${TAG} \
+            -t ${IMAGE}:latest \
+            .
+
           docker push ${IMAGE}:${TAG}
           docker push ${IMAGE}:latest
 
       - name: Update App Service Container
         if: ${{ env.WEBAPP_NAME != '' }}
         run: |
-          IMAGE=${{ secrets.AZURE_ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          az webapp config container set             --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }}             --name ${{ secrets.AZURE_WEBAPP_NAME }}             --container-image-name ${IMAGE}             --container-registry-url https://${{ secrets.AZURE_ACR_LOGIN_SERVER }}             --enable-app-service-storage false
+          IMAGE=${{ secrets.AZURE_ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:latest
+          az webapp config container set \
+            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+            --name ${{ secrets.AZURE_WEBAPP_NAME }} \
+            --docker-custom-image-name ${IMAGE} \
+            --docker-registry-server-url https://${{ secrets.AZURE_ACR_LOGIN_SERVER }}
 
       - name: Restart App Service
         if: ${{ env.WEBAPP_NAME != '' }}
