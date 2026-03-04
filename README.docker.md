@@ -13,7 +13,7 @@ docker build -t hotbray-admin:latest .
 ### Run container
 
 ```bash
-docker run -d --name hotbray-admin -p 5173:3000 --restart unless-stopped hotbray-admin:latest
+docker run -d --name hotbray-admin -p 5173:5173 --restart unless-stopped hotbray-admin:latest
 ```
 
 Access the application:

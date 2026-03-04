@@ -9,12 +9,13 @@ Next.js admin portal for the Hotbray B2B platform.
 
 ## Prerequisites
 
-- Bun installed
+- Node.js 20+
+- npm
 
 ## Setup
 
 ```bash
-bun install
+npm ci
 ```
 
 Copy env file and set variables:
@@ -27,7 +28,7 @@ cp apps/admin/.env.example apps/admin/.env.local
 
 | Command | Description |
 |--------|-------------|
-| `bun run dev` | Run admin app (https://hb1-b2b-dev-admin-a0ejezg4becaddh9.ukwest-01.azurewebsites.net) |
-| `bun run build` | Build admin app |
-| `bun run start` | Start admin app (production) |
-| `bun run lint` | Lint admin app |
+| `npm run dev` | Run admin app (dev) |
+| `npm run build` | Build admin app |
+| `npm run start` | Start admin app (production) |
+| `npm run lint` | Lint admin app |
