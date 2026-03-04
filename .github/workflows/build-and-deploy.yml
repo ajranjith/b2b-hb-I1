@@ -43,11 +43,11 @@ jobs:
           docker push ${IMAGE}:latest
 
       - name: Update App Service Container
-        if: ${{ secrets.AZURE_WEBAPP_NAME != '' }}
+        if: ${{ env.WEBAPP_NAME != '' }}
         run: |
           IMAGE=${{ secrets.AZURE_ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           az webapp config container set             --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }}             --name ${{ secrets.AZURE_WEBAPP_NAME }}             --container-image-name ${IMAGE}             --container-registry-url https://${{ secrets.AZURE_ACR_LOGIN_SERVER }}             --enable-app-service-storage false
 
       - name: Restart App Service
-        if: ${{ secrets.AZURE_WEBAPP_NAME != '' }}
+        if: ${{ env.WEBAPP_NAME != '' }}
         run: az webapp restart --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_WEBAPP_NAME }}
