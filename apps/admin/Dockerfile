@@ -39,16 +39,18 @@ RUN npm run build
 FROM node:20-alpine AS runner
 WORKDIR /app
 
-ENV NODE_ENV=production
+# Force the standalone server to listen on the correct port and host
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
+ENV NODE_ENV=production
 
 EXPOSE 3000
 
-COPY --from=builder /repo/apps/admin/package.json ./apps/admin/package.json
 COPY --from=builder /repo/apps/admin/.next/standalone ./apps/admin/.next/standalone
 COPY --from=builder /repo/apps/admin/.next/static ./apps/admin/.next/static
 COPY --from=builder /repo/apps/admin/public ./apps/admin/public
 
-WORKDIR /app/apps/admin
-CMD ["npm", "run", "start"]
+WORKDIR /app/apps/admin/.next/standalone/apps/admin
+
+# Ensure you are running the standalone server correctly
+CMD ["node", "server.js"]
