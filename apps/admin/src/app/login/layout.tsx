@@ -1,6 +1,6 @@
 "use client";
 
-import { GuestMiddleware } from "../../components/middlewares";
+import { GuestMiddleware } from "@/components/middlewares";
 
 export default function LoginLayout({
   children,

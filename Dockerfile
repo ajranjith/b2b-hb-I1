@@ -4,10 +4,12 @@ FROM node:24-slim AS builder
 WORKDIR /app
 
 ARG NEXT_PUBLIC_API_BASE_URL
+ARG NEXT_PUBLIC_API_URL
 ARG NEXT_PUBLIC_WEB_DOMAIN
 ARG NEXT_PUBLIC_RECAPTCHA_SITE_KEY
 
 ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_WEB_DOMAIN=$NEXT_PUBLIC_WEB_DOMAIN
 ENV NEXT_PUBLIC_RECAPTCHA_SITE_KEY=$NEXT_PUBLIC_RECAPTCHA_SITE_KEY
 
@@ -26,11 +28,26 @@ FROM node:24-slim AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV PORT=5173
+ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
-COPY --from=builder /app ./
+# Copy standalone output (includes server.js and minimal node_modules)
+COPY --from=builder /app/apps/admin/.next/standalone/ ./
 
-EXPOSE 5173
+# Ensure server.js is at /app root for the runner
+COPY --from=builder /app/apps/admin/.next/standalone/apps/admin/server.js ./server.js
 
-CMD ["npm", "run", "start"]
+# Copy .next metadata
+COPY --from=builder /app/apps/admin/.next/standalone/apps/admin/.next ./.next
+
+# Static assets
+COPY --from=builder /app/apps/admin/.next/static/ ./.next/static/
+COPY --from=builder /app/apps/admin/.next/static/ ./apps/admin/.next/static/
+
+# Public assets
+COPY --from=builder /app/apps/admin/public/ ./public/
+COPY --from=builder /app/apps/admin/public/ ./apps/admin/public/
+
+EXPOSE 3000
+
+CMD ["node", "server.js"]

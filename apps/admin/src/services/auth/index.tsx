@@ -6,14 +6,14 @@ import type {
   ILogoutResponse,
   IProfileResponse,
 } from "./contract";
-import { authQueries } from "./query";
-import { GET, POST } from "../../../../../packages/shared/lib/AxiosClient";
-import { UseMutationType } from "../../../../../packages/shared";
+import { GET, POST } from "@shared/lib/AxiosClient";
+import type { UseMutationType } from "@shared/contracts/query";
+import { queries } from "../queryKeys";
 
 // Profile query
 export const useProfile = (options?: object) =>
   useQuery({
-    queryKey: ["auth", "profile"],
+    ...queries.auth.profile,
     queryFn: () =>
       GET<IProfileResponse>({
         url: "/auth/profile",

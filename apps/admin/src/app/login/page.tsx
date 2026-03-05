@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import Image from "next/image";
-import { ILoginResponse, useLogin } from "../../services/auth";
+import { type ILoginResponse, useLogin } from "@/services/auth";
 import loginBg from "@/assets/images/loginBg.png";
 import HotbrayLogo from "@/assets/images/HotbrayLogo.png";
 

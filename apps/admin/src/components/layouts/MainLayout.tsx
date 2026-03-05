@@ -19,7 +19,6 @@ import {
   TagsOutlined,
   UnorderedListOutlined,
   FileTextOutlined,
-  DollarCircleOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { useLogout, useProfile } from "@/services/auth";
@@ -124,7 +123,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
           className: "content-management-submenu",
           children: [
             { key: "/content-management/exclusive-parts", icon: <SettingOutlined />, label: <Link href="/content-management/exclusive-parts">Exclusive Parts</Link> },
-            { key: "/content-management/news-and-offers", icon: <FundViewOutlined />, label: <Link href="/content-management/pricelist">News & Offers & Pricelist</Link> },
+            { key: "/content-management/news-and-offers", icon: <FundViewOutlined />, label: <Link href="/content-management/news-and-offers">News & Offers & Pricelist</Link> },
             { key: "/content-management/external-links", icon: <LinkOutlined />, label: <Link href="/content-management/external-links">External Links</Link> },
             { key: "/content-management/banners", icon: <PictureOutlined />, label: <Link href="/content-management/banners">Banners</Link> },
             { key: "/content-management/marquee-text", icon: <FileTextOutlined />, label: <Link href="/content-management/marquee-text">Marquee Text</Link> },
