@@ -45,7 +45,11 @@ ENV NODE_ENV=production
 
 EXPOSE 3000
 
+# Copy standalone output to /app
 COPY --from=builder /repo/apps/admin/.next/standalone ./
+# Place server.js at /app/server.js for CMD
+COPY --from=builder /repo/apps/admin/.next/standalone/apps/admin/server.js ./server.js
+
 COPY --from=builder /repo/apps/admin/.next/static ./.next/static
 COPY --from=builder /repo/apps/admin/public ./public
 
