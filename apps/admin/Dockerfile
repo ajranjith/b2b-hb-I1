@@ -43,13 +43,22 @@ ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
-# 1. Copy the standalone folder (includes server.js and node_modules)
-COPY --from=builder /repo/apps/admin/.next/standalone ./
+# 1. Copy the standalone folder (includes apps/admin/server.js and node_modules)
+COPY --from=builder /repo/apps/admin/.next/standalone/ ./
 
-# 2. CRITICAL: Copy assets to the nested app path for the monorepo
-COPY --from=builder /repo/apps/admin/.next/static ./apps/admin/.next/static
-COPY --from=builder /repo/apps/admin/public ./apps/admin/public
+# Ensure /app/server.js exists (root run)
+COPY --from=builder /repo/apps/admin/.next/standalone/apps/admin/server.js ./server.js
+
+# Ensure .next metadata exists at /app/.next (root run)
+COPY --from=builder /repo/apps/admin/.next/standalone/apps/admin/.next ./.next
+
+# Static assets
+COPY --from=builder /repo/apps/admin/.next/static/ ./.next/static/
+COPY --from=builder /repo/apps/admin/.next/static/ ./apps/admin/.next/static/
+
+# Public assets
+COPY --from=builder /repo/apps/admin/public/ ./public/
+COPY --from=builder /repo/apps/admin/public/ ./apps/admin/public/
 
 EXPOSE 3000
-# Run from the nested path
-CMD ["node", "apps/admin/server.js"]
+CMD ["node", "server.js"]
