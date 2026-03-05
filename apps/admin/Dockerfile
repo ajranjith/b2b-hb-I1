@@ -42,14 +42,15 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
-
 EXPOSE 3000
 
-# Standalone bundle (includes apps/admin/server.js and minimal deps)
-COPY --from=builder /repo/apps/admin/.next/standalone ./
+# Copy standalone bundle to /app (includes server.js at /app/server.js)
+COPY --from=builder /repo/apps/admin/.next/standalone/ ./
 
-# Static + public must be under apps/admin for monorepo standalone
-COPY --from=builder /repo/apps/admin/.next/static ./apps/admin/.next/static
-COPY --from=builder /repo/apps/admin/public ./apps/admin/public
+# Static must be at /app/.next/static for /_next/static/*
+COPY --from=builder /repo/apps/admin/.next/static/ ./.next/static/
 
-CMD ["node", "apps/admin/server.js"]
+# Public assets
+COPY --from=builder /repo/apps/admin/public/ ./public/
+
+CMD ["node", "server.js"]
