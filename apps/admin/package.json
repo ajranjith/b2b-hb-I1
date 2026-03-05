@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "6.x",
+    "@ckeditor/ckeditor5-build-classic": "^44.3.0",
     "@ckeditor/ckeditor5-react": "^11.0.1",
     "@hotbray/shared": "file:../../packages/shared",
     "@lukemorales/query-key-factory": "^1.3.4",
