@@ -134,8 +134,6 @@ const AddNewsOfferDrawer: FC<AddNewsOfferDrawerProps> = ({
     }
     setSubmitting(true);
     try {
-      console.log(values.longDescription, "---values.longDescription")
-
       onSubmit({
         type: toApiType(activeTab),
         title: values.title.trim(),

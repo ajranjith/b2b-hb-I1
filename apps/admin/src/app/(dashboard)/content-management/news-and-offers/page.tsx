@@ -125,8 +125,6 @@ export default function NewsAndOffersPage() {
     toDate?: string;
   }) => {
     if (editingItem) {
-
-      console.log("---AAAA", values.longDescription)
       updateMutation.mutate(
         {
           id: editingItem.id,
