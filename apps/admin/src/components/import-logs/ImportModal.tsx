@@ -106,10 +106,7 @@ const ImportModal: FC<ImportModalProps> = ({
         body: { padding: 0 },
         header: { display: "none" },
       }}
-      mask={
-        {closable: false}
-      }
-      // maskClosable={false}
+      maskClosable={false}
     >
       <div className="rounded-xl overflow-hidden bg-white ">
         <div className="px-6 pt-6 pb-4 border-b border-gray-100">

@@ -65,8 +65,7 @@ export const CreateDealer: FC<CreateDealerProps> = ({
   
       const code = err?.response?.data?.code;
       const errors = err?.response?.data?.errors ?? [];
-      console.log('errerrors',errors);
-      
+
       form.setFields([
         { name: "accountNumber", errors: [] },
       ]);

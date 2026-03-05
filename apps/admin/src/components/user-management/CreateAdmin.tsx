@@ -38,8 +38,9 @@ export const CreateAdmin: FC<CreateAdminProps> = ({
       form.resetFields();
       onClose();
     },
-    onError: (error: any) => {
-      const apiCode = error?.response?.data?.code;
+    onError: (error: unknown) => {
+      const err = error as { response?: { data?: { code?: string } } };
+      const apiCode = err?.response?.data?.code;
   
       if (apiCode === "EMAIL_CONFLICT") {
         form.setFields([

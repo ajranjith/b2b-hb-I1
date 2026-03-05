@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import "@/app/globals.css";
-import { Providers } from "../lib/providers";
+import { Providers } from "@/lib/providers";
 
 export const metadata: Metadata = {
   title: "Admin Portal | Hotbray",

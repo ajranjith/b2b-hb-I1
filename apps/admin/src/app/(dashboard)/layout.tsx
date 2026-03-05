@@ -1,8 +1,8 @@
 "use client";
 
 import { Suspense } from "react";
-import { MainLayout } from "../../components/layouts/MainLayout";
-import { AuthMiddleware } from "../../components/middlewares";
+import { MainLayout } from "@/components/layouts/MainLayout";
+import { AuthMiddleware } from "@/components/middlewares";
 
 export default function DashboardLayout({
   children,
