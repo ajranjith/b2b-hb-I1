@@ -1,4 +1,5 @@
 name: Build and Deploy Admin
+run-name: Build and Deploy Admin - ${{ github.run_number }}
 
 on:
   push:
@@ -40,6 +41,12 @@ jobs:
           NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}
         run: npm run build -w hotbray-admin
 
+      - name: Set build version
+        run: |
+          VERSION="$(date -u +'%Y%m%d-%H%M%S')-${{ github.run_number }}-${{ github.run_attempt }}"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Build version: $VERSION"
+
       - name: Azure Login (OIDC)
         uses: azure/login@v2
         with:
@@ -58,14 +65,17 @@ jobs:
           docker build \
             -f apps/admin/Dockerfile \
             --build-arg NEXT_PUBLIC_API_BASE_URL='${{ secrets.NEXT_PUBLIC_API_BASE_URL }}' \
+            --build-arg NEXT_PUBLIC_API_URL='${{ secrets.NEXT_PUBLIC_API_BASE_URL }}' \
             --build-arg NEXT_PUBLIC_WEB_DOMAIN='${{ secrets.NEXT_PUBLIC_WEB_DOMAIN }}' \
             --build-arg NEXT_PUBLIC_RECAPTCHA_SITE_KEY='${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}' \
             -t ${IMAGE}:${TAG} \
             -t ${IMAGE}:latest \
+            -t ${IMAGE}:${VERSION} \
             .
 
           docker push ${IMAGE}:${TAG}
           docker push ${IMAGE}:latest
+          docker push ${IMAGE}:${VERSION}
 
       - name: Update App Service Container
         if: ${{ env.WEBAPP_NAME != '' }}

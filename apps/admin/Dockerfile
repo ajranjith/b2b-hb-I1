@@ -20,10 +20,15 @@ COPY --from=deps /repo/node_modules ./node_modules
 COPY . .
 
 ARG NEXT_PUBLIC_API_BASE_URL
+ARG NEXT_PUBLIC_API_URL
 ARG NEXT_PUBLIC_WEB_DOMAIN
+ARG NEXT_PUBLIC_RECAPTCHA_SITE_KEY
 
 ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_WEB_DOMAIN=$NEXT_PUBLIC_WEB_DOMAIN
+ENV NEXT_PUBLIC_RECAPTCHA_SITE_KEY=$NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+ENV NODE_ENV=production
 
 WORKDIR /repo/apps/admin
 RUN npm run build
@@ -40,8 +45,10 @@ ENV HOSTNAME=0.0.0.0
 
 EXPOSE 3000
 
-COPY --from=builder /repo/apps/admin/.next/standalone ./
-COPY --from=builder /repo/apps/admin/.next/static ./.next/static
-COPY --from=builder /repo/apps/admin/public ./public
+COPY --from=builder /repo/apps/admin/package.json ./apps/admin/package.json
+COPY --from=builder /repo/apps/admin/.next/standalone ./apps/admin/.next/standalone
+COPY --from=builder /repo/apps/admin/.next/static ./apps/admin/.next/static
+COPY --from=builder /repo/apps/admin/public ./apps/admin/public
 
-CMD ["sh", "-c", "node apps/admin/server.js"]
+WORKDIR /app/apps/admin
+CMD ["npm", "run", "start"]
