@@ -43,14 +43,13 @@ ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
-# Copy the standalone root (includes node_modules and nested apps/admin)
+EXPOSE 3000
+
+# Standalone bundle (includes apps/admin/server.js and minimal deps)
 COPY --from=builder /repo/apps/admin/.next/standalone ./
 
-# Ensure .next metadata exists at /app/apps/admin/.next
+# Static + public must be under apps/admin for monorepo standalone
 COPY --from=builder /repo/apps/admin/.next/static ./apps/admin/.next/static
-COPY --from=builder /repo/apps/admin/.next/server ./apps/admin/.next/server
-COPY --from=builder /repo/apps/admin/.next/BUILD_ID ./apps/admin/.next/BUILD_ID
 COPY --from=builder /repo/apps/admin/public ./apps/admin/public
 
-EXPOSE 3000
 CMD ["node", "apps/admin/server.js"]
