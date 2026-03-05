@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - main
-      - claude/review-update-errors-H1zvh
   workflow_dispatch:
 
 concurrency:
