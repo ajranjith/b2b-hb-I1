@@ -44,8 +44,14 @@ ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 EXPOSE 3000
 
-# Copy standalone bundle to /app (includes server.js at /app/server.js)
+# Standalone bundle (includes apps/admin/server.js and minimal deps)
 COPY --from=builder /repo/apps/admin/.next/standalone/ ./
+
+# Ensure server.js exists at /app/server.js
+COPY --from=builder /repo/apps/admin/.next/standalone/apps/admin/server.js ./server.js
+
+# Ensure .next metadata exists at /app/.next
+COPY --from=builder /repo/apps/admin/.next/standalone/apps/admin/.next ./.next
 
 # Static must be at /app/.next/static for /_next/static/*
 COPY --from=builder /repo/apps/admin/.next/static/ ./.next/static/
