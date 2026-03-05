@@ -39,20 +39,18 @@ RUN npm run build
 FROM node:20-alpine AS runner
 WORKDIR /app
 
+ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
-ENV NODE_ENV=production
+
+# Copy the standalone root (includes node_modules and nested apps/admin)
+COPY --from=builder /repo/apps/admin/.next/standalone ./
+
+# Ensure .next metadata exists at /app/apps/admin/.next
+COPY --from=builder /repo/apps/admin/.next/static ./apps/admin/.next/static
+COPY --from=builder /repo/apps/admin/.next/server ./apps/admin/.next/server
+COPY --from=builder /repo/apps/admin/.next/BUILD_ID ./apps/admin/.next/BUILD_ID
+COPY --from=builder /repo/apps/admin/public ./apps/admin/public
 
 EXPOSE 3000
-
-# Copy standalone output to /app
-COPY --from=builder /repo/apps/admin/.next/standalone ./
-# Place server.js at /app/server.js for CMD
-COPY --from=builder /repo/apps/admin/.next/standalone/apps/admin/server.js ./server.js
-# Ensure build artifacts exist at /app/.next for server.js runtime lookup
-COPY --from=builder /repo/apps/admin/.next/standalone/apps/admin/.next ./.next
-
-COPY --from=builder /repo/apps/admin/.next/static ./.next/static
-COPY --from=builder /repo/apps/admin/public ./public
-
-CMD ["node", "server.js"]
+CMD ["node", "apps/admin/server.js"]
