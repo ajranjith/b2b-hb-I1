@@ -1,28 +1,28 @@
 name: Trigger auto deployment for hb-frontend
 
-# When this action will be executed
 on:
-  # Automatically trigger it when detected changes in repo
   push:
-    branches: 
-      [ main ]
+    branches:
+      - main
     paths:
-    - '**'
-    - '.github/workflows/hb-frontend-AutoDeployTrigger-708c640b-934c-4a77-af6c-f0d90962e0ad.yml'
+      - 'apps/admin/**'
+      - 'packages/shared/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/hb-frontend-AutoDeployTrigger-708c640b-934c-4a77-af6c-f0d90962e0ad.yml'
 
-  # Allow manual trigger 
-  workflow_dispatch:      
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    permissions: 
-      id-token: write #This is required for requesting the OIDC JWT Token
-      contents: read #Required when GH token is used to authenticate with private repo
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Checkout to the branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Azure Login
         uses: azure/login@v2
@@ -35,15 +35,15 @@ jobs:
         uses: azure/container-apps-deploy-action@v2
         with:
           appSourcePath: ${{ github.workspace }}
-          _dockerfilePathKey_: _dockerfilePath_
-          _targetLabelKey_: _targetLabel_
-          registryUrl: 
+          dockerfilePath: apps/admin/Dockerfile
+          registryUrl: ${{ secrets.HBFRONTEND_REGISTRY_URL }}
           registryUsername: ${{ secrets.HBFRONTEND_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.HBFRONTEND_REGISTRY_PASSWORD }}
           containerAppName: hb-frontend
           resourceGroup: rg1-hb1-b2b-dev
-          imageToBuild: default/[parameters('containerAppName')]:${{ github.sha }}
-          _buildArgumentsKey_: |
-            _buildArgumentsValues_
-
-
+          imageToBuild: ${{ secrets.HBFRONTEND_REGISTRY_URL }}/hb-frontend:${{ github.sha }}
+          buildArguments: |
+            NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
+            NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
+            NEXT_PUBLIC_WEB_DOMAIN=${{ secrets.NEXT_PUBLIC_WEB_DOMAIN }}
+            NEXT_PUBLIC_RECAPTCHA_SITE_KEY=${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}

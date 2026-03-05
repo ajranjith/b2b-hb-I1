@@ -1,7 +1,7 @@
 # =========================
 # 1) Dependencies
 # =========================
-FROM node:20-alpine AS deps
+FROM node:24-slim AS deps
 WORKDIR /repo
 
 COPY package.json package-lock.json ./
@@ -13,7 +13,7 @@ RUN npm ci
 # =========================
 # 2) Build
 # =========================
-FROM node:20-alpine AS builder
+FROM node:24-slim AS builder
 WORKDIR /repo
 
 COPY --from=deps /repo/node_modules ./node_modules
@@ -36,14 +36,14 @@ RUN npm run build
 # =========================
 # 3) Run
 # =========================
-FROM node:20-alpine AS runner
+FROM node:24-slim AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
-# 1. Copy the standalone folder (includes apps/admin/server.js and node_modules)
+# Copy the standalone folder (includes apps/admin/server.js and node_modules)
 COPY --from=builder /repo/apps/admin/.next/standalone/ ./
 
 # Ensure /app/server.js exists (root run)

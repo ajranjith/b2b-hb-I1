@@ -29,22 +29,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "24"
-          cache: "npm"
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Build Admin
-        env:
-          NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
-          NEXT_PUBLIC_WEB_DOMAIN: ${{ secrets.NEXT_PUBLIC_WEB_DOMAIN }}
-          NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}
-        run: npm run build -w hotbray-admin
-
       - name: Set build version
         run: |
           VERSION="$(date -u +'%Y%m%d-%H%M%S')-${{ github.run_number }}-${{ github.run_attempt }}"
