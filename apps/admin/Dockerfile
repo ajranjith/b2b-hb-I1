@@ -49,6 +49,8 @@ EXPOSE 3000
 COPY --from=builder /repo/apps/admin/.next/standalone ./
 # Place server.js at /app/server.js for CMD
 COPY --from=builder /repo/apps/admin/.next/standalone/apps/admin/server.js ./server.js
+# Ensure build artifacts exist at /app/.next for server.js runtime lookup
+COPY --from=builder /repo/apps/admin/.next/standalone/apps/admin/.next ./.next
 
 COPY --from=builder /repo/apps/admin/.next/static ./.next/static
 COPY --from=builder /repo/apps/admin/public ./public
