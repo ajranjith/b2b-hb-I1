@@ -19,8 +19,9 @@ env:
   IMAGE_NAME: admin-frontend
   ACR_LOGIN_SERVER: ${{ secrets.AZURE_ACR_LOGIN_SERVER }}
   ACR_NAME: ${{ secrets.AZURE_ACR_NAME }}
-  RESOURCE_GROUP: ${{ secrets.AZURE_RESOURCE_GROUP }}
-  WEBAPP_NAME: ${{ secrets.AZURE_WEBAPP_NAME }}
+  RESOURCE_GROUP: rg1-hb1-b2b-dev
+  CONTAINER_APP_NAME: hb-frontend
+  CONTAINER_APP_ENV: managedEnvironment-rg1hb1b2bdev-9db7
 
 jobs:
   build-deploy:
@@ -65,16 +66,10 @@ jobs:
           docker push ${IMAGE}:latest
           docker push ${IMAGE}:${VERSION}
 
-      - name: Update App Service Container
-        if: ${{ env.WEBAPP_NAME != '' }}
+      - name: Deploy to Container App
         run: |
           IMAGE=${{ secrets.AZURE_ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${VERSION}
-          az webapp config container set \
-            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
-            --name ${{ secrets.AZURE_WEBAPP_NAME }} \
-            --docker-custom-image-name ${IMAGE} \
-            --docker-registry-server-url https://${{ secrets.AZURE_ACR_LOGIN_SERVER }}
-
-      - name: Restart App Service
-        if: ${{ env.WEBAPP_NAME != '' }}
-        run: az webapp restart --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_WEBAPP_NAME }}
+          az containerapp update \
+            --name ${{ env.CONTAINER_APP_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --image ${IMAGE}
