@@ -80,7 +80,7 @@ jobs:
       - name: Update App Service Container
         if: ${{ env.WEBAPP_NAME != '' }}
         run: |
-          IMAGE=${{ secrets.AZURE_ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:latest
+          IMAGE=${{ secrets.AZURE_ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${VERSION}
           az webapp config container set \
             --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
             --name ${{ secrets.AZURE_WEBAPP_NAME }} \
