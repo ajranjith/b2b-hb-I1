@@ -1,23 +1,8 @@
 # =========================
-# 1) Dependencies
-# =========================
-FROM node:24-slim AS deps
-WORKDIR /repo
-
-COPY package.json package-lock.json ./
-COPY apps/admin/package.json ./apps/admin/
-COPY packages/shared/package.json ./packages/shared/
-
-RUN npm ci
-
-# =========================
-# 2) Build
+# 1) Build
 # =========================
 FROM node:24-slim AS builder
 WORKDIR /repo
-
-COPY --from=deps /repo/node_modules ./node_modules
-COPY . .
 
 ARG NEXT_PUBLIC_API_BASE_URL
 ARG NEXT_PUBLIC_API_URL
@@ -28,8 +13,15 @@ ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_WEB_DOMAIN=$NEXT_PUBLIC_WEB_DOMAIN
 ENV NEXT_PUBLIC_RECAPTCHA_SITE_KEY=$NEXT_PUBLIC_RECAPTCHA_SITE_KEY
-ENV NODE_ENV=production
 
+COPY package*.json ./
+COPY apps/admin/package.json ./apps/admin/
+COPY packages/shared/package.json ./packages/shared/
+RUN npm ci
+
+COPY . .
+
+ENV NODE_ENV=production
 WORKDIR /repo/apps/admin
 RUN npm run build
 
